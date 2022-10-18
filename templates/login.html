@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row main-row">
+    <div class="col-lg-6 col-md-12 col-sm-12">
+        <h1>login</h1>
+        <form method="POST">
+            {{form.hidden_tag()}}
+            <div class="mb-3">
+                {% if form.email.errors %}
+                {{form.email(class="form-control is-invalid", placeholder="your email...")}}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{form.email(class="form-control", placeholder="your email...")}}
+                <div id="emailHelp" class="form-text">we'll never share your email with anyone else.</div>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if form.password.errors %}
+                {{form.password(class="form-control is-invalid", placeholder="your email...")}}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{form.password(class="form-control", placeholder="password...")}}
+                {% endif %}
+            </div>
+            {{form.submit(class="btn btn-primary btn-curve-outline")}}
+        </form>
+        <div class="row auth-row">
+            <div class="col" style="height: 20px;">
+
+            </div>
+        </div>
+        <div class="row auth-row">
+            <div class="col">
+                <p>Don't have an account? <a href="{{url_for('signup')}}" type="button"
+                        class="btn btn-primary btn-curve-outline">create
+                        one</a></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 img-col">
+        <img src="/static/images/auth-banner.svg" class="auth-img">
+    </div>
+</div>
+{% endblock %}

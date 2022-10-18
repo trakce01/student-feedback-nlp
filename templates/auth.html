@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row main-row">
+    <div class="col-lg-6 col-md-12 col-sm-12" style=" height: 30vh;">
+        <h1>Hey,</h1>
+        <h1 class="secondary-header">Let's Get You Started</h1>
+        <div class="row auth-row">
+            <div class="col" style="height: 20px;">
+                <a href="{{url_for('login')}}" type="button" class="btn btn-primary btn-curve-outline">login</a>
+            </div>
+        </div>
+        <div class="row auth-row">
+            <div class="col">
+                <p>Don't have an account? <a href="{{url_for('signup')}}" type="button"
+                        class="btn btn-primary btn-curve-outline">create
+                        one</a></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-lg-6 col-md-12 col-sm-12 img-col">
+        <img src="/static/images/auth-banner.svg" class="auth-img">
+    </div>
+</div>
+{% endblock %}

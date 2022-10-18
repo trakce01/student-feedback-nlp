@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% block content %}
+
+{%if current_user.role == 0%}
+<div class="row dashboard-row">
+    <div class="col-lg-4 col-md-12 col-sm-12 card-col">
+        <div class="container dashboard-card primary">
+            <p>no. of students</p>
+            <h1>{{student_count}}</h1>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 card-col">
+        <div class="container dashboard-card secondary">
+            <p>total feedbacks</p>
+            <h1>{{feedback_count}}</h1>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 card-col">
+        <div class="container dashboard-card tertiary">
+            <p>overall sentiment</p>
+            <h1>
+                {% if faculty_overall_sentiment > 0 %}
+                positive
+                {% elif faculty_overall_sentiment < 0 %} negative {% elif faculty_overall_sentiment==0 %} neutral {%
+                    endif %} </h1>
+        </div>
+    </div>
+</div>
+<div class="piechart-container" style="display: flex; flex-direction: column; align-items: center;">
+    <div id="piechart"></div>
+</div>
+
+<table class="table table-hover table-inverse table-responsive">
+    <thead class="thead-inverse" style="border-bottom: 3px solid;">
+        <tr>
+            <th scope="col">Faculty</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Semester</th>
+            <th scope="col">overall sentiment</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for faculty in faculties %}
+        <tr>
+            <td>{{faculty.name}}</td>
+            <td>{{faculty.subject}}</td>
+            <td>{{faculty.semester}}</td>
+            <td>
+                {% if faculty.sentiment == None %}
+                no feedbacks
+                {% elif faculty.sentiment < 0 %} <font style="color: red;">
+                    negative
+                    </font>
+                    {% elif faculty.sentiment > 0 %}
+                    <font style="color: rgb(4, 136, 4);">
+                        positive
+                    </font>
+                    {% elif faculty.sentiment == 0 %}
+                    <font style="color: #F6BE00;">
+                        neutral
+                    </font>
+                    {% endif %}
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{%elif current_user.role == 1%}
+<div class="row dashboard-row">
+    <div class="col-lg-6 col-md-6 col-sm-12 card-col">
+        <div class="container dashboard-card primary">
+            <p>total feedbacks</p>
+            <h1>{{ faculty_feedbacks_count }}</h1>
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12 card-col">
+        <div class="container dashboard-card secondary">
+            <p>overall sentiment</p>
+            <h1>
+                {% if faculty_overall_sentiment > 0 %}
+                positive
+                {% elif faculty_overall_sentiment < 0 %} negative {% elif faculty_overall_sentiment==0 %} neutral {%
+                    endif %} </h1>
+        </div>
+    </div>
+</div>
+
+<div class="piechart-container" style="display: flex; flex-direction: column; align-items: center;">
+    <div id="piechart"></div>
+</div>
+
+<div class="faculty-feedbacks-container">
+    <h3>Feedbacks</h3>
+    {% for feedback in faculty_feedbacks %}
+    <div class="feedback">
+        {% if feedback.sentiment < 0 %} <p class="sentiment" style="color: red; font-weight: bold;">negative</p>
+            {% elif feedback.sentiment > 0 %}
+            <p class="sentiment" style="color: green; font-weight: bold;">positive</p>
+            {% elif feedback.sentiment == 0 %}
+            <p class="sentiment" style="color: #F6BE00; font-weight: bold;">neutral</p>
+            {% endif %}
+            <br>
+            <p>{{feedback.punctuality}}.{{feedback.teaching_style}}.{{feedback.portion_completion}}.{{feedback.doubt_solving}}.{{feedback.teacher_preparedness}}.{{feedback.additional_comments}}.
+            </p>
+    </div>
+    {% endfor %}
+</div>
+
+{%elif current_user.role == 2%}
+<div class="faculty-feedbacks-container">
+    <h3>hey student,</h3>
+    <form class="select-cont" method="POST">
+        {{sform.hidden_tag()}}
+        <p class="bold" style="font-size: 20px;padding-top: 10px;">Select Semester</p>
+        {{sform.semester(class="form-select",style="width: 250px;height:50px;margin-left: 20px;")}}
+        {{sform.submit(class="btn btn-curve-outline" ,style="height:50px;margin-left:20px" )}}
+    </form>
+</div>
+{%endif%}
+{% endblock %}
+
+{% block jscode %}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    // Load google charts
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    // Draw the chart and set the chart values
+    function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+            ['Sentiment', 'Score'],
+            ['Neutral', parseInt('{{neutral}}')],
+            ['Positive', parseInt('{{pos}}')],
+            ['Negative', parseInt('{{neg}}')],
+        ]);
+
+        // Optional; add a title and set the width and height of the chart
+        var options = {
+            'title': 'Sentiment Analysis', 'width': 500, 'height': 300, 'colors': ['#F6BE00', '#037d50', 'FF0000'
+            ]
+        };
+
+        // Display the chart inside the <div> element with id="piechart"
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+    }
+</script>
+
+{% endblock jscode %}

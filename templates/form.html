@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<p class="bold">Faculty:</p>
+<form method="POST">
+    {{form.hidden_tag()}}
+    <label for="punctuality"><b>Punctuality</b></label>
+    <br>
+    {{form.punctuality(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    <label for="tstyle"><b>Teaching Style</b></label>
+    <br>
+    {{form.teaching_style(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    <label for="portComp"><b>Portion Completion</b></label>
+    <br>
+    {{form.portion_completion(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    <label for="dsolve"><b>Doubt Solving</b></label>
+    <br>
+    {{form.doubt_solving(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    <label for="tprep"><b>Teacher Preparedness</b></label>
+    <br>
+    {{form.teacher_preparedness(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    <label for="adcom"><b>Additional Comments</b></label>
+    <br>
+    {{form.additional_comments(class="form-control",placeholder="your feedback...")}}
+    <br>
+
+    {{form.submit(class="btn btn-curve-outline",style="margin-bottom:50px;")}}
+
+</form>
+
+{% endblock content %}

@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row main-row">
+    {% if user.role == 1 %}
+    <div class="col-lg-6 col-md-12 col-sm-12">
+        <h1>new faculty</h1>
+        <form method="POST">
+            {{faculty_form.hidden_tag()}}
+            <div class="mb-3">
+                <input class="form-control" type="text" value="{{user.email}}" aria-label="Disabled input example"
+                    disabled readonly>
+            </div>
+            <div class="mb-3">
+                {% if faculty_form.name.errors %}
+                {{faculty_form.name(class="form-control is-invalid", placeholder="your name...")}}
+                <div class="invalid-feedback">
+                    {% for error in faculty_form.name.errors %}
+                    <span>{{error}}</span>
+                    <br>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{faculty_form.name(class="form-control", placeholder="your name...")}}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if faculty_form.subject.errors %}
+                {{faculty_form.subject(class="form-control is-invalid", placeholder="your subject...")}}
+                <div class="invalid-feedback">
+                    {% for error in faculty_form.subject.errors %}
+                    <span>{{error}}</span>
+                    <br>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{faculty_form.subject(class="form-control", placeholder="your subject...")}}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if faculty_form.semester.errors %}
+                {{faculty_form.semester(class="form-control is-invalid", placeholder="your subject...")}}
+                <div class="invalid-feedback">
+                    {% for error in faculty_form.semester.errors %}
+                    <span>{{error}}</span>
+                    <br>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{faculty_form.semester(class="form-control", placeholder="your subject...")}}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                {% if faculty_form.branch.errors %}
+                {{faculty_form.branch(class="form-control is-invalid", placeholder="your subject...")}}
+                <div class="invalid-feedback">
+                    {% for error in faculty_form.branch.errors %}
+                    <span>{{error}}</span>
+                    <br>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{faculty_form.branch(class="form-control", placeholder="your subject...")}}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <p>your password: <font style="color: #4d24ab;">{{user.password}}</font>
+                </p>
+            </div>
+            <div class="mt-4">
+                {{faculty_form.submit(class="btn btn-primary btn-curve-outline")}}
+            </div>
+
+        </form>
+    </div>
+    {%elif user.role == 2%}
+    <div class="col-lg-6 col-md-12 col-sm-12">
+        <h1>new student</h1>
+        <form method="POST">
+            {{student_form.hidden_tag()}}
+            <div class="mb-3">
+                <input class="form-control" type="text" value="{{user.email}}" aria-label="Disabled input example"
+                    disabled readonly>
+            </div>
+            <div class="mb-3">
+                {% if student_form.branch.errors %}
+                {{student_form.branch(class="form-control is-invalid", placeholder="your subject...")}}
+                <div class="invalid-feedback">
+                    {% for error in student_form.branch.errors %}
+                    <span>{{error}}</span>
+                    <br>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{student_form.branch(class="form-control", placeholder="your subject...")}}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <p>your password: <font style="color: #4d24ab;">{{user.password}}</font>
+                </p>
+            </div>
+            <div class="mt-4">
+                {{student_form.submit(class="btn btn-primary btn-curve-outline")}}
+            </div>
+
+        </form>
+    </div>
+    {%endif%}
+
+
+    <div class="col-lg-6 col-md-12 col-sm-12 img-col">
+        <img src="/static/images/auth-banner.svg" class="auth-img">
+    </div>
+</div>
+
+{% endblock content %}

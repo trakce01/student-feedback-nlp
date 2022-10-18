@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="faculty-feedbacks-container">
+    <h3>hey student,</h3>
+    <form class="select-cont" method="POST">
+        {{form.hidden_tag()}}
+        <p class="bold" style="font-size: 20px;padding-top: 10px;">Select Semester</p>
+        {{form.semester(class="form-select",style="width: 250px;height:50px;margin-left: 20px;")}}
+        {{form.submit(class="btn btn-curve-outline" ,style="height:50px;margin-left:20px" )}}
+    </form>
+    <p class="bold" style="margin-top: 30px;">Feedbacks</p>
+    <table class="table table-hover table-inverse table-responsive">
+        <thead class="thead-inverse" style="border-bottom: 3px solid;">
+            <tr>
+                <th scope="col">Faculty</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for faculty in faculties %}
+
+            <tr id="table">
+                <td>{{faculty.name}}</td>
+                <td>{{faculty.subject}}</td>
+                <td>{{faculty.semester}}</td>
+                <td>
+                    {% if feedback.filter_by(faculty_id=faculty.id).count() >0 %}
+                    <p style="color: gray;font-size: 15px;">Feedback Received</p>
+                    {% else %}
+                    <a class="btn btn-curve-outline" href='{{url_for("form", faculty_id=faculty.id)}}'>Give
+                        Feedback</a>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
